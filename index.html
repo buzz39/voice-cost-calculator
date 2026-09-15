@@ -180,6 +180,25 @@
   .tier .margin .pct.ok { color: var(--yellow); }
   .tier .margin .pct.bad { color: var(--red); }
 
+  .tier .features {
+    margin-top: 0.75rem; padding-top: 0.75rem;
+    border-top: 1px solid var(--border); font-size: 0.7rem; color: var(--muted);
+    list-style: none; padding-left: 0;
+  }
+  .tier .features li { padding: 0.15rem 0; }
+  .tier .features li::before { content: '\2713 '; color: var(--green); font-weight: bold; }
+
+  .tier-custom {
+    border-style: dashed; border-color: var(--accent2);
+  }
+  .tier-custom input[type="number"] {
+    width: 100%; padding: 0.4rem 0.6rem; background: var(--input-bg);
+    border: 1px solid var(--border); border-radius: 4px; color: var(--accent2);
+    font-family: inherit; font-size: 1rem; font-weight: bold;
+    outline: none; margin-top: 0.25rem;
+  }
+  .tier-custom input[type="number"]:focus { border-color: var(--accent); }
+
   .affiliates {
     margin-top: 2rem; background: var(--card); border: 1px solid var(--border);
     border-radius: 8px; padding: 1.25rem;
@@ -349,9 +368,62 @@
     </div>
 
     <div class="tiers">
-      <div class="tier" id="in_tierStarter"><h3>Starter</h3><div class="price">&#8377;20,000<small>/mo</small></div><div class="margin"><span>Margin: </span><span class="pct" id="in_tierStarterMargin">&mdash;</span></div></div>
-      <div class="tier recommended" id="in_tierGrowth"><h3>Growth</h3><div class="price">&#8377;35,000<small>/mo</small></div><div class="margin"><span>Margin: </span><span class="pct" id="in_tierGrowthMargin">&mdash;</span></div></div>
-      <div class="tier" id="in_tierPro"><h3>Pro</h3><div class="price">&#8377;55,000<small>/mo</small></div><div class="margin"><span>Margin: </span><span class="pct" id="in_tierProMargin">&mdash;</span></div></div>
+      <div class="tier" id="in_tierStarter">
+        <h3>Starter</h3>
+        <div class="price">&#8377;20,000<small>/mo</small></div>
+        <ul class="features">
+          <li>1 phone number</li>
+          <li>Up to 500 calls/mo</li>
+          <li>Basic AI voice agent</li>
+          <li>Email support</li>
+          <li>Call recording</li>
+        </ul>
+        <div class="margin"><span>Margin: </span><span class="pct" id="in_tierStarterMargin">&mdash;</span></div>
+      </div>
+      <div class="tier recommended" id="in_tierGrowth">
+        <h3>Growth</h3>
+        <div class="price">&#8377;35,000<small>/mo</small></div>
+        <ul class="features">
+          <li>2 phone numbers</li>
+          <li>Up to 1,500 calls/mo</li>
+          <li>Priority AI (faster LLM)</li>
+          <li>Priority support</li>
+          <li>Call recording + transcription</li>
+          <li>Basic analytics dashboard</li>
+        </ul>
+        <div class="margin"><span>Margin: </span><span class="pct" id="in_tierGrowthMargin">&mdash;</span></div>
+      </div>
+      <div class="tier" id="in_tierPro">
+        <h3>Pro</h3>
+        <div class="price">&#8377;55,000<small>/mo</small></div>
+        <ul class="features">
+          <li>5 phone numbers</li>
+          <li>Up to 5,000 calls/mo</li>
+          <li>Custom voice cloning</li>
+          <li>Dedicated support</li>
+          <li>Full transcription + sentiment</li>
+          <li>Advanced analytics + API</li>
+          <li>Custom integrations</li>
+        </ul>
+        <div class="margin"><span>Margin: </span><span class="pct" id="in_tierProMargin">&mdash;</span></div>
+      </div>
+      <div class="tier tier-custom" id="in_tierCustom">
+        <h3>Custom</h3>
+        <div class="price">
+          <span id="in_customSym">&#8377;</span><input type="number" id="in_customPrice" value="0" min="0" step="1000" oninput="calcIn()">
+          <small>/mo</small>
+        </div>
+        <ul class="features">
+          <li>Unlimited phone numbers</li>
+          <li>Unlimited calls</li>
+          <li>Custom AI models</li>
+          <li>White-label option</li>
+          <li>SLA guarantee</li>
+          <li>Dedicated account manager</li>
+          <li>Custom integrations + API</li>
+        </ul>
+        <div class="margin"><span>Margin: </span><span class="pct" id="in_tierCustomMargin">&mdash;</span></div>
+      </div>
     </div>
   </div>
 
@@ -477,9 +549,62 @@
     </div>
 
     <div class="tiers">
-      <div class="tier" id="us_tierStarter"><h3>Starter</h3><div class="price">$500<small>/mo</small></div><div class="margin"><span>Margin: </span><span class="pct" id="us_tierStarterMargin">&mdash;</span></div></div>
-      <div class="tier recommended" id="us_tierGrowth"><h3>Growth</h3><div class="price">$1,000<small>/mo</small></div><div class="margin"><span>Margin: </span><span class="pct" id="us_tierGrowthMargin">&mdash;</span></div></div>
-      <div class="tier" id="us_tierPro"><h3>Pro</h3><div class="price">$2,000<small>/mo</small></div><div class="margin"><span>Margin: </span><span class="pct" id="us_tierProMargin">&mdash;</span></div></div>
+      <div class="tier" id="us_tierStarter">
+        <h3>Starter</h3>
+        <div class="price">$500<small>/mo</small></div>
+        <ul class="features">
+          <li>1 phone number</li>
+          <li>Up to 500 calls/mo</li>
+          <li>Basic AI voice agent</li>
+          <li>Email support</li>
+          <li>Call recording</li>
+        </ul>
+        <div class="margin"><span>Margin: </span><span class="pct" id="us_tierStarterMargin">&mdash;</span></div>
+      </div>
+      <div class="tier recommended" id="us_tierGrowth">
+        <h3>Growth</h3>
+        <div class="price">$1,000<small>/mo</small></div>
+        <ul class="features">
+          <li>2 phone numbers</li>
+          <li>Up to 1,500 calls/mo</li>
+          <li>Priority AI (faster LLM)</li>
+          <li>Priority support</li>
+          <li>Call recording + transcription</li>
+          <li>Basic analytics dashboard</li>
+        </ul>
+        <div class="margin"><span>Margin: </span><span class="pct" id="us_tierGrowthMargin">&mdash;</span></div>
+      </div>
+      <div class="tier" id="us_tierPro">
+        <h3>Pro</h3>
+        <div class="price">$2,000<small>/mo</small></div>
+        <ul class="features">
+          <li>5 phone numbers</li>
+          <li>Up to 5,000 calls/mo</li>
+          <li>Custom voice cloning</li>
+          <li>Dedicated support</li>
+          <li>Full transcription + sentiment</li>
+          <li>Advanced analytics + API</li>
+          <li>Custom integrations</li>
+        </ul>
+        <div class="margin"><span>Margin: </span><span class="pct" id="us_tierProMargin">&mdash;</span></div>
+      </div>
+      <div class="tier tier-custom" id="us_tierCustom">
+        <h3>Custom</h3>
+        <div class="price">
+          $<input type="number" id="us_customPrice" value="0" min="0" step="100" oninput="calcUs()">
+          <small>/mo</small>
+        </div>
+        <ul class="features">
+          <li>Unlimited phone numbers</li>
+          <li>Unlimited calls</li>
+          <li>Custom AI models</li>
+          <li>White-label option</li>
+          <li>SLA guarantee</li>
+          <li>Dedicated account manager</li>
+          <li>Custom integrations + API</li>
+        </ul>
+        <div class="margin"><span>Margin: </span><span class="pct" id="us_tierCustomMargin">&mdash;</span></div>
+      </div>
     </div>
   </div>
 
@@ -710,6 +835,7 @@ function calcIn() {
   setTier('in_tierStarterMargin', IN_TIERS.starter, cogs, '\u20B9');
   setTier('in_tierGrowthMargin', IN_TIERS.growth, cogs, '\u20B9');
   setTier('in_tierProMargin', IN_TIERS.pro, cogs, '\u20B9');
+  setTier('in_tierCustomMargin', parseFloat(document.getElementById('in_customPrice').value)||0, cogs, '\u20B9');
 
   document.querySelectorAll('#panelIn .tier').forEach(function(t){t.classList.remove('recommended');});
   var pp=cogs<IN_TIERS.pro?((IN_TIERS.pro-cogs)/IN_TIERS.pro*100):0;
@@ -796,6 +922,7 @@ function calcUs() {
   setTier('us_tierStarterMargin', US_TIERS.starter, cogs, '$');
   setTier('us_tierGrowthMargin', US_TIERS.growth, cogs, '$');
   setTier('us_tierProMargin', US_TIERS.pro, cogs, '$');
+  setTier('us_tierCustomMargin', parseFloat(document.getElementById('us_customPrice').value)||0, cogs, '$');
 
   document.querySelectorAll('#panelUs .tier').forEach(function(t){t.classList.remove('recommended');});
   var pp=cogs<US_TIERS.pro?((US_TIERS.pro-cogs)/US_TIERS.pro*100):0;
