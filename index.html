@@ -544,7 +544,7 @@ function calculate() {
 
   const totalMinutes = p.callDur * p.monthlyCalls;
   const aiMinutes = p.callDur * p.aiSpeechPct * p.monthlyCalls;
-  const aiChars = aiMinutes * 9000; // ~150 chars/sec
+  const aiChars = aiMinutes * 1000; // ~150 words/min × 5 chars/word ≈ 1000 chars/min
 
   // Telephony
   let telephonyPerMin, numberRentalCost, recordingPerMin;
