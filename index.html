@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Voice Agent Cost Calculator — Live Pricing</title>
-<meta name="description" content="Calculate per-call and monthly costs for AI voice agent deployments. Live pricing from Vobiz, Sarvam, Groq, and VPS providers. Free tool.">
+<meta name="description" content="Calculate per-call and monthly costs for AI voice agent deployments. Live pricing from Telnyx, Deepgram, ElevenLabs, Vobiz, Sarvam, Groq. Free tool.">
 <style>
   :root {
     --bg: #0a0a0f;
@@ -22,75 +22,65 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.6;
-    min-height: 100vh;
+    background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh;
   }
   .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem; }
   h1 { font-size: 1.4rem; color: var(--accent); margin-bottom: 0.25rem; }
   .subtitle { color: var(--muted); font-size: 0.8rem; margin-bottom: 0.25rem; }
+
   .visitor-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.5rem;
   }
   .visitor-count {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.75rem;
-    color: var(--muted);
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    padding: 0.3rem 0.8rem;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.75rem; color: var(--muted);
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 999px; padding: 0.3rem 0.8rem;
   }
-  .visitor-count .num {
-    color: var(--accent2);
-    font-weight: bold;
-    font-size: 0.85rem;
+  .visitor-count .num { color: var(--accent2); font-weight: bold; font-size: 0.85rem; }
+
+  /* Tabs */
+  .tabs {
+    display: flex; gap: 0; margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
   }
+  .tab-btn {
+    padding: 0.6rem 1.5rem; border: none; background: transparent;
+    color: var(--muted); font-family: inherit; font-size: 0.85rem;
+    cursor: pointer; border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
   .status-bar {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 2rem;
-    flex-wrap: wrap;
+    display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;
   }
   .status-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.3rem 0.7rem;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    font-size: 0.7rem;
-    color: var(--muted);
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.3rem 0.7rem; background: var(--card);
+    border: 1px solid var(--border); border-radius: 999px;
+    font-size: 0.7rem; color: var(--muted);
   }
   .status-pill .dot {
     width: 6px; height: 6px; border-radius: 50%;
-    background: var(--green);
-    animation: pulse 2s infinite;
+    background: var(--green); animation: pulse 2s infinite;
   }
-  .status-pill.error .dot { background: var(--red); animation: none; }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
   .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
   @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
 
   .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1.25rem;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.25rem;
   }
   .card h2 {
-    font-size: 0.75rem; text-transform: uppercase;
-    letter-spacing: 0.1em; color: var(--accent2); margin-bottom: 1rem;
+    font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--accent2); margin-bottom: 1rem;
   }
   .field { margin-bottom: 0.75rem; }
   .field label {
@@ -98,11 +88,9 @@
     margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.05em;
   }
   .field select, .field input[type="number"] {
-    width: 100%; padding: 0.5rem 0.75rem;
-    background: var(--input-bg); border: 1px solid var(--border);
-    border-radius: 4px; color: var(--text);
-    font-family: inherit; font-size: 0.8rem; outline: none;
-    transition: border-color 0.2s;
+    width: 100%; padding: 0.5rem 0.75rem; background: var(--input-bg);
+    border: 1px solid var(--border); border-radius: 4px; color: var(--text);
+    font-family: inherit; font-size: 0.8rem; outline: none; transition: border-color 0.2s;
   }
   .field select:focus, .field input[type="number"]:focus { border-color: var(--accent); }
   .field select option { background: var(--input-bg); color: var(--text); }
@@ -117,33 +105,29 @@
     border-radius: 50%; background: var(--accent); cursor: pointer;
   }
   .range-val {
-    font-size: 0.8rem; color: var(--accent);
-    min-width: 3rem; text-align: right; font-weight: bold;
+    font-size: 0.8rem; color: var(--accent); min-width: 3rem;
+    text-align: right; font-weight: bold;
   }
 
   .toggle-row {
-    display: flex; align-items: center;
-    justify-content: space-between; padding: 0.4rem 0;
+    display: flex; align-items: center; justify-content: space-between; padding: 0.4rem 0;
   }
   .toggle-row span { font-size: 0.75rem; color: var(--muted); }
   .toggle { position: relative; width: 36px; height: 20px; }
   .toggle input { opacity: 0; width: 0; height: 0; }
   .toggle .slider {
-    position: absolute; cursor: pointer;
-    top: 0; left: 0; right: 0; bottom: 0;
+    position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
     background: var(--border); border-radius: 20px; transition: 0.3s;
   }
   .toggle .slider::before {
-    content: ''; position: absolute;
-    width: 16px; height: 16px; left: 2px; bottom: 2px;
-    background: var(--muted); border-radius: 50%; transition: 0.3s;
+    content: ''; position: absolute; width: 16px; height: 16px;
+    left: 2px; bottom: 2px; background: var(--muted); border-radius: 50%; transition: 0.3s;
   }
   .toggle input:checked + .slider { background: var(--accent); }
   .toggle input:checked + .slider::before { transform: translateX(16px); background: #fff; }
 
   .results-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 1rem; margin-bottom: 1.5rem;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem;
   }
   @media (max-width: 768px) { .results-grid { grid-template-columns: repeat(2, 1fr); } }
 
@@ -162,16 +146,15 @@
   .breakdown-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
   .breakdown-table th {
     text-align: left; padding: 0.5rem 0.75rem; color: var(--muted);
-    font-size: 0.65rem; text-transform: uppercase;
-    letter-spacing: 0.08em; border-bottom: 1px solid var(--border);
+    font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em;
+    border-bottom: 1px solid var(--border);
   }
   .breakdown-table td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); }
   .breakdown-table tr:last-child td { border-bottom: none; font-weight: bold; color: var(--accent); }
   .breakdown-table .num { text-align: right; font-variant-numeric: tabular-nums; }
   .breakdown-table .bar {
-    width: 80px; height: 6px; background: var(--border);
-    border-radius: 3px; overflow: hidden;
-    display: inline-block; vertical-align: middle; margin-left: 0.5rem;
+    width: 80px; height: 6px; background: var(--border); border-radius: 3px;
+    overflow: hidden; display: inline-block; vertical-align: middle; margin-left: 0.5rem;
   }
   .breakdown-table .bar-fill { height: 100%; border-radius: 3px; background: var(--accent); transition: width 0.3s; }
 
@@ -198,47 +181,31 @@
   .tier .margin .pct.bad { color: var(--red); }
 
   .affiliates {
-    margin-top: 2rem;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1.25rem;
+    margin-top: 2rem; background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.25rem;
   }
   .affiliates h2 {
-    font-size: 0.75rem; text-transform: uppercase;
-    letter-spacing: 0.1em; color: var(--accent2); margin-bottom: 1rem;
+    font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--accent2); margin-bottom: 1rem;
   }
   .aff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
-  .aff-item {
-    display: flex; flex-direction: column; gap: 0.3rem;
-    font-size: 0.78rem;
-  }
+  .aff-item { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.78rem; }
   .aff-item .aff-name { color: var(--text); font-weight: bold; font-size: 0.85rem; }
   .aff-item .aff-desc { color: var(--muted); font-size: 0.7rem; }
   .aff-item a {
-    color: var(--accent2); text-decoration: none;
-    font-size: 0.75rem; display: inline-flex; align-items: center; gap: 0.3rem;
+    color: var(--accent2); text-decoration: none; font-size: 0.75rem;
+    display: inline-flex; align-items: center; gap: 0.3rem;
   }
   .aff-item a:hover { text-decoration: underline; }
-  .aff-item a::after { content: '↗'; font-size: 0.6rem; }
+  .aff-item a::after { content: '\2197'; font-size: 0.6rem; }
   .aff-badge {
     display: inline-block; font-size: 0.55rem; padding: 0.1rem 0.4rem;
     border-radius: 999px; background: var(--accent); color: #fff;
     text-transform: uppercase; letter-spacing: 0.05em;
   }
 
-  .source-badge {
-    display: inline-flex; align-items: center; gap: 0.3rem;
-    font-size: 0.6rem; color: var(--muted);
-    background: var(--input-bg); padding: 0.15rem 0.5rem;
-    border-radius: 999px; margin-top: 0.5rem;
-  }
-  .source-badge a { color: var(--accent2); text-decoration: none; }
-  .source-badge a:hover { text-decoration: underline; }
-
   .footer {
-    margin-top: 2rem; padding-top: 1rem;
-    border-top: 1px solid var(--border);
+    margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border);
     font-size: 0.65rem; color: var(--muted); text-align: center;
   }
   .footer a { color: var(--accent2); text-decoration: none; }
@@ -249,472 +216,627 @@
 
 <div class="container">
   <h1>Voice Agent Cost Calculator</h1>
-  <p class="subtitle">Live pricing from Vobiz / Sarvam / Groq — self-hosted Dograh on VPS</p>
+  <p class="subtitle">Live pricing — self-hosted Dograh on VPS</p>
 
   <div class="visitor-bar">
     <div class="visitor-count">
       <span class="dot" style="width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;"></span>
-      <span id="visitorCount" class="num">—</span> visitors
+      <span id="visitorCount" class="num">&mdash;</span> visitors
     </div>
   </div>
 
-  <div class="status-bar" id="statusBar">
-    <div class="status-pill" id="statusVobiz"><span class="dot"></span> Vobiz</div>
-    <div class="status-pill" id="statusSarvam"><span class="dot"></span> Sarvam</div>
-    <div class="status-pill" id="statusGroq"><span class="dot"></span> Groq</div>
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('in')">India (INR)</button>
+    <button class="tab-btn" onclick="switchTab('us')">United States (USD)</button>
   </div>
 
-  <!-- INPUTS -->
-  <div class="grid">
+  <!-- ================================================================== -->
+  <!-- INDIA TAB -->
+  <!-- ================================================================== -->
+  <div class="tab-panel active" id="panelIn">
+    <div class="status-bar">
+      <div class="status-pill"><span class="dot"></span> Vobiz</div>
+      <div class="status-pill"><span class="dot"></span> Sarvam</div>
+      <div class="status-pill"><span class="dot"></span> Groq</div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Providers</h2>
+        <div class="field">
+          <label>Telephony</label>
+          <select id="in_telephony" onchange="calcIn()">
+            <option value="vobiz">Vobiz (India) &mdash; &#8377;0.45/min</option>
+            <option value="plivo">Plivo (India) &mdash; &#8377;0.38/min</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Speech-to-Text</label>
+          <select id="in_stt" onchange="calcIn()">
+            <option value="sarvam">Sarvam Saaras v3 &mdash; &#8377;0.50/min</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Text-to-Speech</label>
+          <select id="in_tts" onchange="calcIn()">
+            <option value="sarvam_v2">Sarvam Bulbul v2 &mdash; &#8377;15/10K chars</option>
+            <option value="sarvam_v3">Sarvam Bulbul v3 &mdash; &#8377;30/10K chars</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>LLM</label>
+          <select id="in_llm" onchange="calcIn()">
+            <option value="groq_llama70b">Groq &mdash; Llama 3.3 70B (fastest)</option>
+            <option value="groq_llama8b">Groq &mdash; Llama 3.1 8B (cheapest)</option>
+            <option value="groq_gpt120b">Groq &mdash; GPT-OSS 120B</option>
+            <option value="sarvam_30b">Sarvam 30B (Indic-native)</option>
+            <option value="sarvam_105b">Sarvam 105B (best quality)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>VPS / Dograh Hosting</label>
+          <select id="in_vps" onchange="calcIn()">
+            <option value="contabo_shared">Contabo Cloud VPS 4 &mdash; &#8377;530/mo (shared)</option>
+            <option value="hetzner_shared">Hetzner CX33 &mdash; &#8377;705/mo (shared)</option>
+            <option value="ovh_vcore" selected>OVH VPS-2 vCore &mdash; &#8377;830/mo</option>
+            <option value="contabo_dedicated">Contabo Cloud VPS 6 &mdash; &#8377;724/mo</option>
+            <option value="hetzner_dedicated">Hetzner CCX13 &mdash; &#8377;3,570/mo (DEDICATED)</option>
+            <option value="vultr_shared">Vultr Cloud Compute &mdash; &#8377;3,320/mo</option>
+          </select>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Call Parameters</h2>
+        <div class="field">
+          <label>Avg Call Duration (minutes)</label>
+          <div class="range-row">
+            <input type="range" id="in_callDur" min="1" max="15" step="0.5" value="4" oninput="updRange(this); calcIn()">
+            <span class="range-val" id="in_callDurVal">4 min</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Monthly Call Volume</label>
+          <div class="range-row">
+            <input type="range" id="in_monthlyCalls" min="50" max="5000" step="50" value="500" oninput="updRange(this); calcIn()">
+            <span class="range-val" id="in_monthlyCallsVal">500</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>AI Speech % of Call</label>
+          <div class="range-row">
+            <input type="range" id="in_aiSpeechPct" min="10" max="60" step="5" value="30" oninput="updRange(this,'%'); calcIn()">
+            <span class="range-val" id="in_aiSpeechPctVal">30%</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Avg AI Response (tokens)</label>
+          <div class="range-row">
+            <input type="range" id="in_avgTokens" min="50" max="500" step="10" value="150" oninput="updRange(this); calcIn()">
+            <span class="range-val" id="in_avgTokensVal">150</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>AI Turns per Call</label>
+          <div class="range-row">
+            <input type="range" id="in_avgTurns" min="2" max="20" step="1" value="8" oninput="updRange(this); calcIn()">
+            <span class="range-val" id="in_avgTurnsVal">8</span>
+          </div>
+        </div>
+        <div class="toggle-row">
+          <span>Call Recording</span>
+          <label class="toggle"><input type="checkbox" id="in_recording" onchange="calcIn()"><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <span>Phone Number Rental</span>
+          <label class="toggle"><input type="checkbox" id="in_numberRental" checked onchange="calcIn()"><span class="slider"></span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="results-grid">
+      <div class="metric"><div class="value" id="in_metCogs">&mdash;</div><div class="label">Monthly COGS (&#8377;)</div></div>
+      <div class="metric green"><div class="value" id="in_metPerCall">&mdash;</div><div class="label">Cost per Call (&#8377;)</div></div>
+      <div class="metric yellow"><div class="value" id="in_metPerMin">&mdash;</div><div class="label">Cost per Minute (&#8377;)</div></div>
+      <div class="metric"><div class="value" id="in_metMargin">&mdash;</div><div class="label">Growth Margin (&#8377;)</div></div>
+    </div>
+
     <div class="card">
-      <h2>Providers</h2>
-      <div class="field">
-        <label>Telephony</label>
-        <select id="telephony" onchange="calculate()">
-          <option value="vobiz">Vobiz (India) — ₹0.45/min</option>
-          <option value="plivo">Plivo (India) — ₹0.38/min</option>
-        </select>
+      <h2>Cost Breakdown</h2>
+      <table class="breakdown-table"><thead><tr>
+        <th>Component</th><th>Provider</th><th class="num">Monthly (&#8377;)</th><th class="num">Per Call (&#8377;)</th><th>% of Total</th>
+      </tr></thead><tbody id="in_breakdownBody"></tbody></table>
+    </div>
+
+    <div class="tiers">
+      <div class="tier" id="in_tierStarter"><h3>Starter</h3><div class="price">&#8377;20,000<small>/mo</small></div><div class="margin"><span>Margin: </span><span class="pct" id="in_tierStarterMargin">&mdash;</span></div></div>
+      <div class="tier recommended" id="in_tierGrowth"><h3>Growth</h3><div class="price">&#8377;35,000<small>/mo</small></div><div class="margin"><span>Margin: </span><span class="pct" id="in_tierGrowthMargin">&mdash;</span></div></div>
+      <div class="tier" id="in_tierPro"><h3>Pro</h3><div class="price">&#8377;55,000<small>/mo</small></div><div class="margin"><span>Margin: </span><span class="pct" id="in_tierProMargin">&mdash;</span></div></div>
+    </div>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- US TAB -->
+  <!-- ================================================================== -->
+  <div class="tab-panel" id="panelUs">
+    <div class="status-bar">
+      <div class="status-pill"><span class="dot"></span> Telnyx</div>
+      <div class="status-pill"><span class="dot"></span> Deepgram</div>
+      <div class="status-pill"><span class="dot"></span> ElevenLabs</div>
+      <div class="status-pill"><span class="dot"></span> Groq</div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Providers</h2>
+        <div class="field">
+          <label>Telephony</label>
+          <select id="us_telephony" onchange="calcUs()">
+            <option value="telnyx">Telnyx (US) &mdash; $0.002/min</option>
+            <option value="plivo_us">Plivo (US) &mdash; $0.0028/min</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Speech-to-Text</label>
+          <select id="us_stt" onchange="calcUs()">
+            <option value="deepgram_nova3">Deepgram Nova-3 &mdash; $0.0077/min</option>
+            <option value="deepgram_flux">Deepgram Flux &mdash; $0.0077/min</option>
+            <option value="assemblyai">AssemblyAI Universal-3.5 &mdash; $0.0075/min</option>
+            <option value="openai_whisper">OpenAI Whisper &mdash; $0.006/min</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Text-to-Speech</label>
+          <select id="us_tts" onchange="calcUs()">
+            <option value="elevenlabs_flash">ElevenLabs Flash v2.5 &mdash; $50/1M chars</option>
+            <option value="elevenlabs_v3">ElevenLabs Eleven v3 &mdash; $100/1M chars</option>
+            <option value="openai_tts1">OpenAI TTS-1 &mdash; $15/1M chars</option>
+            <option value="deepgram_aura2">Deepgram Aura-2 &mdash; $30/1M chars</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>LLM</label>
+          <select id="us_llm" onchange="calcUs()">
+            <option value="groq_llama70b">Groq &mdash; Llama 3.3 70B (fastest)</option>
+            <option value="groq_llama8b">Groq &mdash; Llama 3.1 8B (cheapest)</option>
+            <option value="groq_gpt120b">Groq &mdash; GPT-OSS 120B</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>VPS / Dograh Hosting</label>
+          <select id="us_vps" onchange="calcUs()">
+            <option value="contabo_shared_us">Contabo Cloud VPS 4 &mdash; $6.39/mo (shared)</option>
+            <option value="hetzner_shared_us">Hetzner CX33 &mdash; $8.49/mo (shared)</option>
+            <option value="ovh_vcore_us" selected>OVH VPS-2 vCore &mdash; $10/mo</option>
+            <option value="contabo_dedicated_us">Contabo Cloud VPS 6 &mdash; $8.72/mo</option>
+            <option value="hetzner_dedicated_us">Hetzner CCX13 &mdash; $42.99/mo (DEDICATED)</option>
+            <option value="vultr_shared_us">Vultr Cloud Compute &mdash; $40/mo</option>
+          </select>
+        </div>
       </div>
-      <div class="field">
-        <label>Speech-to-Text</label>
-        <select id="stt" onchange="calculate()">
-          <option value="sarvam">Sarvam Saaras v3 — ₹0.50/min</option>
-        </select>
+      <div class="card">
+        <h2>Call Parameters</h2>
+        <div class="field">
+          <label>Avg Call Duration (minutes)</label>
+          <div class="range-row">
+            <input type="range" id="us_callDur" min="1" max="15" step="0.5" value="4" oninput="updRange(this); calcUs()">
+            <span class="range-val" id="us_callDurVal">4 min</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Monthly Call Volume</label>
+          <div class="range-row">
+            <input type="range" id="us_monthlyCalls" min="50" max="5000" step="50" value="500" oninput="updRange(this); calcUs()">
+            <span class="range-val" id="us_monthlyCallsVal">500</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>AI Speech % of Call</label>
+          <div class="range-row">
+            <input type="range" id="us_aiSpeechPct" min="10" max="60" step="5" value="30" oninput="updRange(this,'%'); calcUs()">
+            <span class="range-val" id="us_aiSpeechPctVal">30%</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Avg AI Response (tokens)</label>
+          <div class="range-row">
+            <input type="range" id="us_avgTokens" min="50" max="500" step="10" value="150" oninput="updRange(this); calcUs()">
+            <span class="range-val" id="us_avgTokensVal">150</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>AI Turns per Call</label>
+          <div class="range-row">
+            <input type="range" id="us_avgTurns" min="2" max="20" step="1" value="8" oninput="updRange(this); calcUs()">
+            <span class="range-val" id="us_avgTurnsVal">8</span>
+          </div>
+        </div>
+        <div class="toggle-row">
+          <span>Call Recording</span>
+          <label class="toggle"><input type="checkbox" id="us_recording" onchange="calcUs()"><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <span>Phone Number Rental</span>
+          <label class="toggle"><input type="checkbox" id="us_numberRental" checked onchange="calcUs()"><span class="slider"></span></label>
+        </div>
       </div>
-      <div class="field">
-        <label>Text-to-Speech</label>
-        <select id="tts" onchange="calculate()">
-          <option value="sarvam_v2">Sarvam Bulbul v2 — ₹15/10K chars</option>
-          <option value="sarvam_v3">Sarvam Bulbul v3 — ₹30/10K chars</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>LLM</label>
-        <select id="llm" onchange="calculate()">
-          <option value="groq_llama70b">Groq — Llama 3.3 70B (fastest)</option>
-          <option value="groq_llama8b">Groq — Llama 3.1 8B (cheapest)</option>
-          <option value="groq_gpt120b">Groq — GPT-OSS 120B</option>
-          <option value="sarvam_30b">Sarvam 30B (Indic-native)</option>
-          <option value="sarvam_105b">Sarvam 105B (best quality)</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>VPS / Dograh Hosting</label>
-        <select id="vps" onchange="calculate()">
-          <option value="contabo_shared">Contabo Cloud VPS 4 — ₹530/mo (shared)</option>
-          <option value="hetzner_shared">Hetzner CX33 — ₹705/mo (shared)</option>
-          <option value="ovh_vcore" selected>OVH VPS-2 vCore — ₹830/mo</option>
-          <option value="contabo_dedicated">Contabo Cloud VPS 6 — ₹724/mo</option>
-          <option value="hetzner_dedicated">Hetzner CCX13 — ₹3,570/mo (DEDICATED)</option>
-          <option value="vultr_shared">Vultr Cloud Compute — ₹3,320/mo</option>
-        </select>
-      </div>
+    </div>
+
+    <div class="results-grid">
+      <div class="metric"><div class="value" id="us_metCogs">&mdash;</div><div class="label">Monthly COGS ($)</div></div>
+      <div class="metric green"><div class="value" id="us_metPerCall">&mdash;</div><div class="label">Cost per Call ($)</div></div>
+      <div class="metric yellow"><div class="value" id="us_metPerMin">&mdash;</div><div class="label">Cost per Minute ($)</div></div>
+      <div class="metric"><div class="value" id="us_metMargin">&mdash;</div><div class="label">Growth Margin ($)</div></div>
     </div>
 
     <div class="card">
-      <h2>Call Parameters</h2>
-      <div class="field">
-        <label>Avg Call Duration (minutes)</label>
-        <div class="range-row">
-          <input type="range" id="callDur" min="1" max="15" step="0.5" value="4" oninput="updateRange(this); calculate()">
-          <span class="range-val" id="callDurVal">4 min</span>
-        </div>
-      </div>
-      <div class="field">
-        <label>Monthly Call Volume</label>
-        <div class="range-row">
-          <input type="range" id="monthlyCalls" min="50" max="5000" step="50" value="500" oninput="updateRange(this); calculate()">
-          <span class="range-val" id="monthlyCallsVal">500</span>
-        </div>
-      </div>
-      <div class="field">
-        <label>AI Speech % of Call</label>
-        <div class="range-row">
-          <input type="range" id="aiSpeechPct" min="10" max="60" step="5" value="30" oninput="updateRange(this, '%'); calculate()">
-          <span class="range-val" id="aiSpeechPctVal">30%</span>
-        </div>
-      </div>
-      <div class="field">
-        <label>Avg AI Response (tokens)</label>
-        <div class="range-row">
-          <input type="range" id="avgTokens" min="50" max="500" step="10" value="150" oninput="updateRange(this); calculate()">
-          <span class="range-val" id="avgTokensVal">150</span>
-        </div>
-      </div>
-      <div class="field">
-        <label>AI Turns per Call</label>
-        <div class="range-row">
-          <input type="range" id="avgTurns" min="2" max="20" step="1" value="8" oninput="updateRange(this); calculate()">
-          <span class="range-val" id="avgTurnsVal">8</span>
-        </div>
-      </div>
-      <div class="toggle-row">
-        <span>Call Recording</span>
-        <label class="toggle"><input type="checkbox" id="recording" onchange="calculate()"><span class="slider"></span></label>
-      </div>
-      <div class="toggle-row">
-        <span>Phone Number Rental</span>
-        <label class="toggle"><input type="checkbox" id="numberRental" checked onchange="calculate()"><span class="slider"></span></label>
-      </div>
+      <h2>Cost Breakdown</h2>
+      <table class="breakdown-table"><thead><tr>
+        <th>Component</th><th>Provider</th><th class="num">Monthly ($)</th><th class="num">Per Call ($)</th><th>% of Total</th>
+      </tr></thead><tbody id="us_breakdownBody"></tbody></table>
+    </div>
+
+    <div class="tiers">
+      <div class="tier" id="us_tierStarter"><h3>Starter</h3><div class="price">$500<small>/mo</small></div><div class="margin"><span>Margin: </span><span class="pct" id="us_tierStarterMargin">&mdash;</span></div></div>
+      <div class="tier recommended" id="us_tierGrowth"><h3>Growth</h3><div class="price">$1,000<small>/mo</small></div><div class="margin"><span>Margin: </span><span class="pct" id="us_tierGrowthMargin">&mdash;</span></div></div>
+      <div class="tier" id="us_tierPro"><h3>Pro</h3><div class="price">$2,000<small>/mo</small></div><div class="margin"><span>Margin: </span><span class="pct" id="us_tierProMargin">&mdash;</span></div></div>
     </div>
   </div>
 
-  <!-- TOP METRICS -->
-  <div class="results-grid" id="metrics">
-    <div class="metric">
-      <div class="value" id="metCogs">—</div>
-      <div class="label">Monthly COGS (₹)</div>
-    </div>
-    <div class="metric green">
-      <div class="value" id="metPerCall">—</div>
-      <div class="label">Cost per Call (₹)</div>
-    </div>
-    <div class="metric yellow">
-      <div class="value" id="metPerMin">—</div>
-      <div class="label">Cost per Minute (₹)</div>
-    </div>
-    <div class="metric">
-      <div class="value" id="metMargin">—</div>
-      <div class="label">Growth Margin (₹)</div>
-    </div>
-  </div>
-
-  <!-- BREAKDOWN -->
-  <div class="card">
-    <h2>Cost Breakdown</h2>
-    <table class="breakdown-table">
-      <thead>
-        <tr>
-          <th>Component</th>
-          <th>Provider</th>
-          <th class="num">Monthly (₹)</th>
-          <th class="num">Per Call (₹)</th>
-          <th>% of Total</th>
-        </tr>
-      </thead>
-      <tbody id="breakdownBody"></tbody>
-    </table>
-  </div>
-
-  <!-- PRICING TIERS -->
-  <div class="tiers" id="tierCards">
-    <div class="tier" id="tierStarter">
-      <h3>Starter</h3>
-      <div class="price">₹20,000<small>/mo</small></div>
-      <div class="margin">
-        <span>Margin:</span>
-        <span class="pct" id="tierStarterMargin">—</span>
-      </div>
-    </div>
-    <div class="tier recommended" id="tierGrowth">
-      <h3>Growth</h3>
-      <div class="price">₹35,000<small>/mo</small></div>
-      <div class="margin">
-        <span>Margin:</span>
-        <span class="pct" id="tierGrowthMargin">—</span>
-      </div>
-    </div>
-    <div class="tier" id="tierPro">
-      <h3>Pro</h3>
-      <div class="price">₹55,000<small>/mo</small></div>
-      <div class="margin">
-        <span>Margin:</span>
-        <span class="pct" id="tierProMargin">—</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- AFFILIATE LINKS -->
+  <!-- AFFILIATES -->
   <div class="affiliates">
-    <h2>Providers Used in This Calculator</h2>
+    <h2>Providers</h2>
     <div class="aff-grid">
       <div class="aff-item">
+        <span class="aff-name">Telnyx</span>
+        <span class="aff-desc">US telephony &mdash; $0.002/min, own carrier network, $1/number/mo</span>
+        <a href="https://telnyx.com" target="_blank" rel="noopener">telnyx.com</a>
+      </div>
+      <div class="aff-item">
+        <span class="aff-name">Deepgram</span>
+        <span class="aff-desc">STT &mdash; Nova-3, $0.0077/min, voice-agent optimized</span>
+        <a href="https://deepgram.com" target="_blank" rel="noopener">deepgram.com</a>
+      </div>
+      <div class="aff-item">
+        <span class="aff-name">ElevenLabs</span>
+        <span class="aff-desc">TTS &mdash; Flash v2.5, 75ms latency, $50/1M chars</span>
+        <a href="https://elevenlabs.io" target="_blank" rel="noopener">elevenlabs.io</a>
+      </div>
+      <div class="aff-item">
         <span class="aff-name">Vobiz</span>
-        <span class="aff-desc">India telephony — ₹0.45/min inbound, TRAI compliant, INR billing</span>
+        <span class="aff-desc">India telephony &mdash; &#8377;0.45/min, TRAI compliant</span>
         <a href="https://vobiz.ai" target="_blank" rel="noopener">vobiz.ai</a>
       </div>
       <div class="aff-item">
         <span class="aff-name">Sarvam AI</span>
-        <span class="aff-desc">Indic-native STT/TTS — Bulbul v2 (₹15/10K) & Saaras v3</span>
+        <span class="aff-desc">Indic STT/TTS &mdash; Bulbul v2 (&#8377;15/10K) &amp; Saaras v3</span>
         <a href="https://sarvam.ai" target="_blank" rel="noopener">sarvam.ai</a>
       </div>
       <div class="aff-item">
         <span class="aff-name">Groq</span>
-        <span class="aff-desc">Fastest LLM inference — Llama 3.3 70B at 500+ tok/s</span>
+        <span class="aff-desc">LLM inference &mdash; Llama 3.3 70B, 500+ tok/s</span>
         <a href="https://groq.com" target="_blank" rel="noopener">groq.com</a>
       </div>
       <div class="aff-item">
         <span class="aff-name">Contabo</span>
-        <span class="aff-desc">Budget VPS — from ₹530/mo for 4vCPU/8GB</span>
+        <span class="aff-desc">Budget VPS &mdash; from $6.39/mo for 4vCPU/8GB</span>
         <a href="https://contabo.com" target="_blank" rel="noopener">contabo.com</a>
         <span class="aff-badge">affiliate</span>
-      </div>
-      <div class="aff-item">
-        <span class="aff-name">Hetzner</span>
-        <span class="aff-desc">Premium VPS — CX33 shared to CCX13 dedicated</span>
-        <a href="https://hetzner.com" target="_blank" rel="noopener">hetzner.com</a>
-      </div>
-      <div class="aff-item">
-        <span class="aff-name">OVHcloud</span>
-        <span class="aff-desc">vCore VPS — ₹830/mo for 4vCPU/8GB</span>
-        <a href="https://ovhcloud.com" target="_blank" rel="noopener">ovhcloud.com</a>
-      </div>
-      <div class="aff-item">
-        <span class="aff-name">Vultr</span>
-        <span class="aff-desc">Premium network — from ₹3,320/mo</span>
-        <a href="https://vultr.com" target="_blank" rel="noopener">vultr.com</a>
       </div>
     </div>
   </div>
 
   <div class="footer">
-    Prices verified Sep 2026. COGS calculator — not financial advice.<br>
-    Provider links may be affiliate links — <a href="https://contabo.com/en-us/affiliate-program" target="_blank" rel="noopener">Contabo affiliate</a> pays €20–€250/sale via CJ.
+    Prices verified Sep 2026. COGS calculator &mdash; not financial advice.<br>
+    <a href="https://contabo.com/en-us/affiliate-program" target="_blank" rel="noopener">Contabo affiliate</a> pays &euro;20&ndash;&euro;250/sale via CJ.
   </div>
 </div>
 
 <script>
 // ======================================================================
-// STATIC PRICING DATA (verified Sep 2026 — no backend needed)
+// PRICING DATA (verified Sep 2026)
 // ======================================================================
 
-const PRICES = {
+var US_PRICES = {
+  telnyx: {
+    voice_per_min_usd: 0.002,
+    number_rental_usd: 1.00,
+    recording_per_min_usd: 0.005,
+  },
+  plivo_us: {
+    voice_inbound_per_min_usd: 0.0028,
+    voice_outbound_per_min_usd: 0.001,
+    number_rental_usd: 1.15,
+  },
+  stt: {
+    deepgram_nova3_per_min_usd: 0.0077,
+    deepgram_flux_per_min_usd: 0.0077,
+    assemblyai_per_min_usd: 0.0075,
+    openai_whisper_per_min_usd: 0.006,
+  },
+  tts: {
+    elevenlabs_flash_per_1m_chars_usd: 50,
+    elevenlabs_v3_per_1m_chars_usd: 100,
+    openai_tts1_per_1m_chars_usd: 15,
+    deepgram_aura2_per_1m_chars_usd: 30,
+  },
+  groq: {
+    llama_3_3_70b_input_per_1m_usd: 0.59,
+    llama_3_3_70b_output_per_1m_usd: 0.79,
+    llama_3_1_8b_input_per_1m_usd: 0.05,
+    llama_3_1_8b_output_per_1m_usd: 0.08,
+    gpt_oss_120b_input_per_1m_usd: 0.15,
+    gpt_oss_120b_output_per_1m_usd: 0.60,
+  },
+  vps_us: {
+    contabo_shared_us:     { name: 'Contabo Cloud VPS 4',     price_usd: 6.39,  type: 'shared' },
+    hetzner_shared_us:     { name: 'Hetzner CX33',            price_usd: 8.49,  type: 'shared' },
+    ovh_vcore_us:          { name: 'OVH VPS-2 vCore',         price_usd: 10.00, type: 'vCore' },
+    contabo_dedicated_us:  { name: 'Contabo Cloud VPS 6',     price_usd: 8.72,  type: 'shared' },
+    hetzner_dedicated_us:  { name: 'Hetzner CCX13',           price_usd: 42.99, type: 'DEDICATED' },
+    vultr_shared_us:       { name: 'Vultr Cloud Compute',     price_usd: 40.00, type: 'shared' },
+  },
+};
+
+var IN_PRICES = {
   vobiz: {
     voice_inbound_per_min_inr: 0.45,
-    voice_outbound_per_min_inr: 0.45,
     number_rental_inr: 600,
     call_recording_per_min_inr: 0.10,
-    source: 'vobiz.ai (verified Sep 2026)',
   },
   plivo: {
     voice_domestic_per_min_inr: 0.38,
     number_rental_per_month_inr: 200,
-    source: 'plivo.com (Sep 2026)',
   },
   sarvam: {
     stt_per_min_inr: 0.50,
     tts_bulbul_v2_per_10k_chars_inr: 15,
     tts_bulbul_v3_per_10k_chars_inr: 30,
     llm_sarvam_30b_input_per_1m_inr: 2.5,
-    llm_sarvam_30b_cached_per_1m_inr: 1.5,
     llm_sarvam_30b_output_per_1m_inr: 10,
     llm_sarvam_105b_input_per_1m_inr: 4,
-    llm_sarvam_105b_cached_per_1m_inr: 2.5,
     llm_sarvam_105b_output_per_1m_inr: 16,
-    source: 'docs.sarvam.ai (Sep 2026)',
   },
-  groq: {
-    llama_3_3_70b_input_per_1m_inr: 48.97,  // $0.59 × 83
-    llama_3_3_70b_output_per_1m_inr: 65.57,  // $0.79 × 83
-    llama_3_1_8b_input_per_1m_inr: 4.15,     // $0.05 × 83
-    llama_3_1_8b_output_per_1m_inr: 6.64,    // $0.08 × 83
-    gpt_oss_120b_input_per_1m_inr: 12.45,    // $0.15 × 83
-    gpt_oss_120b_output_per_1m_inr: 49.80,   // $0.60 × 83
-    source: 'console.groq.com (Sep 2026)',
+  groq_inr: {
+    llama_3_3_70b_input_per_1m_inr: 48.97,
+    llama_3_3_70b_output_per_1m_inr: 65.57,
+    llama_3_1_8b_input_per_1m_inr: 4.15,
+    llama_3_1_8b_output_per_1m_inr: 6.64,
+    gpt_oss_120b_input_per_1m_inr: 12.45,
+    gpt_oss_120b_output_per_1m_inr: 49.80,
   },
   vps: {
-    contabo_shared:     { name: 'Contabo Cloud VPS 4',     price_inr: 530,  type: 'shared (may throttle)' },
-    hetzner_shared:     { name: 'Hetzner CX33',            price_inr: 705,  type: 'shared (good single-thread)' },
-    ovh_vcore:          { name: 'OVH VPS-2 vCore',         price_inr: 830,  type: 'vCore (better than shared)' },
-    contabo_dedicated:  { name: 'Contabo Cloud VPS 6',     price_inr: 724,  type: 'shared (more headroom)' },
-    hetzner_dedicated:  { name: 'Hetzner CCX13',           price_inr: 3570, type: 'DEDICATED (no throttle)' },
-    vultr_shared:       { name: 'Vultr Cloud Compute',     price_inr: 3320, type: 'shared (premium network)' },
+    contabo_shared:     { name: 'Contabo Cloud VPS 4',     price_inr: 530,  type: 'shared' },
+    hetzner_shared:     { name: 'Hetzner CX33',            price_inr: 705,  type: 'shared' },
+    ovh_vcore:          { name: 'OVH VPS-2 vCore',         price_inr: 830,  type: 'vCore' },
+    contabo_dedicated:  { name: 'Contabo Cloud VPS 6',     price_inr: 724,  type: 'shared' },
+    hetzner_dedicated:  { name: 'Hetzner CCX13',           price_inr: 3570, type: 'DEDICATED' },
+    vultr_shared:       { name: 'Vultr Cloud Compute',     price_inr: 3320, type: 'shared' },
   },
 };
 
+var US_TIERS = { starter: 500, growth: 1000, pro: 2000 };
+var IN_TIERS = { starter: 20000, growth: 35000, pro: 55000 };
+
 // ======================================================================
-// CALCULATOR ENGINE
+// TAB SWITCHING
 // ======================================================================
 
-function calculate() {
-  const p = {
-    telephony: document.getElementById('telephony').value,
-    stt: document.getElementById('stt').value,
-    tts: document.getElementById('tts').value,
-    llm: document.getElementById('llm').value,
-    vpsKey: document.getElementById('vps').value,
-    callDur: parseFloat(document.getElementById('callDur').value),
-    monthlyCalls: parseInt(document.getElementById('monthlyCalls').value),
-    aiSpeechPct: parseInt(document.getElementById('aiSpeechPct').value) / 100,
-    avgTokens: parseInt(document.getElementById('avgTokens').value),
-    avgTurns: parseInt(document.getElementById('avgTurns').value),
-    recording: document.getElementById('recording').checked,
-    numberRental: document.getElementById('numberRental').checked,
-  };
-
-  const totalMinutes = p.callDur * p.monthlyCalls;
-  const aiMinutes = p.callDur * p.aiSpeechPct * p.monthlyCalls;
-  const aiChars = aiMinutes * 1000; // ~150 words/min × 5 chars/word ≈ 1000 chars/min
-
-  // Telephony
-  let telephonyPerMin, numberRentalCost, recordingPerMin;
-  if (p.telephony === 'vobiz') {
-    telephonyPerMin = PRICES.vobiz.voice_inbound_per_min_inr;
-    numberRentalCost = p.numberRental ? PRICES.vobiz.number_rental_inr : 0;
-    recordingPerMin = PRICES.vobiz.call_recording_per_min_inr;
+function switchTab(region) {
+  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+  if (region === 'in') {
+    document.querySelectorAll('.tab-btn')[0].classList.add('active');
+    document.getElementById('panelIn').classList.add('active');
+    calcIn();
   } else {
-    telephonyPerMin = PRICES.plivo.voice_domestic_per_min_inr;
-    numberRentalCost = p.numberRental ? PRICES.plivo.number_rental_per_month_inr : 0;
-    recordingPerMin = 0;
-  }
-  const telephonyCost = totalMinutes * telephonyPerMin;
-  const recordingCost = p.recording ? totalMinutes * recordingPerMin : 0;
-
-  // STT
-  const sttCost = totalMinutes * PRICES.sarvam.stt_per_min_inr;
-
-  // TTS
-  const ttsPer10k = p.tts === 'sarvam_v2'
-    ? PRICES.sarvam.tts_bulbul_v2_per_10k_chars_inr
-    : PRICES.sarvam.tts_bulbul_v3_per_10k_chars_inr;
-  const ttsCost = (aiChars / 10000) * ttsPer10k;
-
-  // LLM
-  const totalInputTokens = p.avgTurns * p.monthlyCalls * 500;
-  const totalOutputTokens = p.avgTurns * p.monthlyCalls * p.avgTokens;
-  let llmInputCost = 0, llmOutputCost = 0;
-
-  if (p.llm === 'groq_llama70b') {
-    llmInputCost = (totalInputTokens / 1e6) * PRICES.groq.llama_3_3_70b_input_per_1m_inr;
-    llmOutputCost = (totalOutputTokens / 1e6) * PRICES.groq.llama_3_3_70b_output_per_1m_inr;
-  } else if (p.llm === 'groq_llama8b') {
-    llmInputCost = (totalInputTokens / 1e6) * PRICES.groq.llama_3_1_8b_input_per_1m_inr;
-    llmOutputCost = (totalOutputTokens / 1e6) * PRICES.groq.llama_3_1_8b_output_per_1m_inr;
-  } else if (p.llm === 'groq_gpt120b') {
-    llmInputCost = (totalInputTokens / 1e6) * PRICES.groq.gpt_oss_120b_input_per_1m_inr;
-    llmOutputCost = (totalOutputTokens / 1e6) * PRICES.groq.gpt_oss_120b_output_per_1m_inr;
-  } else if (p.llm === 'sarvam_30b') {
-    llmInputCost = (totalInputTokens / 1e6) * PRICES.sarvam.llm_sarvam_30b_input_per_1m_inr;
-    llmOutputCost = (totalOutputTokens / 1e6) * PRICES.sarvam.llm_sarvam_30b_output_per_1m_inr;
-  } else if (p.llm === 'sarvam_105b') {
-    llmInputCost = (totalInputTokens / 1e6) * PRICES.sarvam.llm_sarvam_105b_input_per_1m_inr;
-    llmOutputCost = (totalOutputTokens / 1e6) * PRICES.sarvam.llm_sarvam_105b_output_per_1m_inr;
-  }
-  const llmCost = llmInputCost + llmOutputCost;
-
-  // VPS
-  const vpsInfo = PRICES.vps[p.vpsKey];
-  const vpsCost = vpsInfo.price_inr;
-
-  // TOTALS
-  const cogs = telephonyCost + sttCost + ttsCost + llmCost + recordingCost + numberRentalCost + vpsCost;
-  const costPerCall = p.monthlyCalls > 0 ? cogs / p.monthlyCalls : 0;
-  const costPerMin = totalMinutes > 0 ? cogs / totalMinutes : 0;
-
-  // Provider names
-  const llmNames = {
-    groq_llama70b: 'Groq Llama 3.3 70B',
-    groq_llama8b: 'Groq Llama 3.1 8B',
-    groq_gpt120b: 'Groq GPT-OSS 120B',
-    sarvam_30b: 'Sarvam 30B',
-    sarvam_105b: 'Sarvam 105B',
-  };
-
-  const providerNames = {
-    telephony: p.telephony === 'vobiz' ? 'Vobiz India' : 'Plivo India',
-    stt: 'Sarvam Saaras v3',
-    tts: p.tts === 'sarvam_v2' ? 'Sarvam Bulbul v2' : 'Sarvam Bulbul v3',
-    llm: llmNames[p.llm],
-  };
-
-  // Render
-  document.getElementById('metCogs').textContent = '₹' + cogs.toLocaleString('en-IN', {maximumFractionDigits: 0});
-  document.getElementById('metPerCall').textContent = '₹' + costPerCall.toFixed(2);
-  document.getElementById('metPerMin').textContent = '₹' + costPerMin.toFixed(2);
-
-  const growthMargin = 35000 - cogs;
-  const growthMarginPct = cogs < 35000 ? ((35000 - cogs) / 35000 * 100) : 0;
-  const metMargin = document.getElementById('metMargin');
-  metMargin.textContent = '₹' + growthMargin.toLocaleString('en-IN', {maximumFractionDigits: 0}) + ' (' + growthMarginPct.toFixed(1) + '%)';
-
-  // Breakdown table
-  const rows = [
-    ['Telephony', telephonyCost, providerNames.telephony],
-    ['STT', sttCost, providerNames.stt],
-    ['TTS', ttsCost, providerNames.tts],
-    ['LLM', llmCost, providerNames.llm],
-    ['Recording', recordingCost, '—'],
-    ['Number Rental', numberRentalCost, '—'],
-    ['VPS (Dograh)', vpsCost, vpsInfo.name + ' (' + vpsInfo.type + ')'],
-  ];
-
-  let html = '';
-  for (const [name, cost, provider] of rows) {
-    const pct = cogs > 0 ? (cost / cogs * 100) : 0;
-    html += '<tr>' +
-      '<td>' + name + '</td>' +
-      '<td style="color:var(--muted)">' + provider + '</td>' +
-      '<td class="num">₹' + cost.toLocaleString('en-IN', {minimumFractionDigits: 2}) + '</td>' +
-      '<td class="num">₹' + (p.monthlyCalls > 0 ? (cost / p.monthlyCalls).toFixed(2) : '0.00') + '</td>' +
-      '<td>' + pct.toFixed(1) + '% <span class="bar"><span class="bar-fill" style="width:' + pct + '%"></span></span></td>' +
-    '</tr>';
-  }
-  html += '<tr>' +
-    '<td>TOTAL</td><td></td>' +
-    '<td class="num">₹' + cogs.toLocaleString('en-IN', {minimumFractionDigits: 2}) + '</td>' +
-    '<td class="num">₹' + costPerCall.toFixed(2) + '</td>' +
-    '<td>100%</td>' +
-  '</tr>';
-  document.getElementById('breakdownBody').innerHTML = html;
-
-  // Tier margins
-  setTierMargin('tierStarterMargin', 20000, cogs);
-  setTierMargin('tierGrowthMargin', 35000, cogs);
-  setTierMargin('tierProMargin', 55000, cogs);
-
-  // Highlight recommended tier
-  document.querySelectorAll('.tier').forEach(function(t) { t.classList.remove('recommended'); });
-  const proPct = cogs < 55000 ? ((55000 - cogs) / 55000 * 100) : 0;
-  const growthPct = cogs < 35000 ? ((35000 - cogs) / 35000 * 100) : 0;
-  if (proPct >= 50) {
-    document.getElementById('tierPro').classList.add('recommended');
-  } else if (growthPct >= 40) {
-    document.getElementById('tierGrowth').classList.add('recommended');
-  } else {
-    document.getElementById('tierStarter').classList.add('recommended');
+    document.querySelectorAll('.tab-btn')[1].classList.add('active');
+    document.getElementById('panelUs').classList.add('active');
+    calcUs();
   }
 }
 
-function setTierMargin(id, price, cogs) {
-  const el = document.getElementById(id);
-  const margin = price - cogs;
-  const pct = cogs < price ? ((price - cogs) / price * 100) : 0;
-  el.textContent = '₹' + margin.toLocaleString('en-IN', {maximumFractionDigits: 0}) + ' (' + pct.toFixed(1) + '%)';
+// ======================================================================
+// INDIA CALCULATOR
+// ======================================================================
+
+function calcIn() {
+  var p = {
+    telephony: document.getElementById('in_telephony').value,
+    tts: document.getElementById('in_tts').value,
+    llm: document.getElementById('in_llm').value,
+    vpsKey: document.getElementById('in_vps').value,
+    callDur: parseFloat(document.getElementById('in_callDur').value),
+    monthlyCalls: parseInt(document.getElementById('in_monthlyCalls').value),
+    aiSpeechPct: parseInt(document.getElementById('in_aiSpeechPct').value) / 100,
+    avgTokens: parseInt(document.getElementById('in_avgTokens').value),
+    avgTurns: parseInt(document.getElementById('in_avgTurns').value),
+    recording: document.getElementById('in_recording').checked,
+    numberRental: document.getElementById('in_numberRental').checked,
+  };
+
+  var totalMin = p.callDur * p.monthlyCalls;
+  var aiMin = p.callDur * p.aiSpeechPct * p.monthlyCalls;
+  var aiChars = aiMin * 1000;
+
+  var telPerMin, numRent, recPerMin;
+  if (p.telephony === 'vobiz') {
+    telPerMin = IN_PRICES.vobiz.voice_inbound_per_min_inr;
+    numRent = p.numberRental ? IN_PRICES.vobiz.number_rental_inr : 0;
+    recPerMin = IN_PRICES.vobiz.call_recording_per_min_inr;
+  } else {
+    telPerMin = IN_PRICES.plivo.voice_domestic_per_min_inr;
+    numRent = p.numberRental ? IN_PRICES.plivo.number_rental_per_month_inr : 0;
+    recPerMin = 0;
+  }
+  var telCost = totalMin * telPerMin;
+  var recCost = p.recording ? totalMin * recPerMin : 0;
+  var sttCost = totalMin * IN_PRICES.sarvam.stt_per_min_inr;
+
+  var ttsPer10k = p.tts === 'sarvam_v2' ? IN_PRICES.sarvam.tts_bulbul_v2_per_10k_chars_inr : IN_PRICES.sarvam.tts_bulbul_v3_per_10k_chars_inr;
+  var ttsCost = (aiChars / 10000) * ttsPer10k;
+
+  var inTok = p.avgTurns * p.monthlyCalls * 500;
+  var outTok = p.avgTurns * p.monthlyCalls * p.avgTokens;
+  var llmIn = 0, llmOut = 0;
+  if (p.llm === 'groq_llama70b') { llmIn = (inTok/1e6)*IN_PRICES.groq_inr.llama_3_3_70b_input_per_1m_inr; llmOut = (outTok/1e6)*IN_PRICES.groq_inr.llama_3_3_70b_output_per_1m_inr; }
+  else if (p.llm === 'groq_llama8b') { llmIn = (inTok/1e6)*IN_PRICES.groq_inr.llama_3_1_8b_input_per_1m_inr; llmOut = (outTok/1e6)*IN_PRICES.groq_inr.llama_3_1_8b_output_per_1m_inr; }
+  else if (p.llm === 'groq_gpt120b') { llmIn = (inTok/1e6)*IN_PRICES.groq_inr.gpt_oss_120b_input_per_1m_inr; llmOut = (outTok/1e6)*IN_PRICES.groq_inr.gpt_oss_120b_output_per_1m_inr; }
+  else if (p.llm === 'sarvam_30b') { llmIn = (inTok/1e6)*IN_PRICES.sarvam.llm_sarvam_30b_input_per_1m_inr; llmOut = (outTok/1e6)*IN_PRICES.sarvam.llm_sarvam_30b_output_per_1m_inr; }
+  else if (p.llm === 'sarvam_105b') { llmIn = (inTok/1e6)*IN_PRICES.sarvam.llm_sarvam_105b_input_per_1m_inr; llmOut = (outTok/1e6)*IN_PRICES.sarvam.llm_sarvam_105b_output_per_1m_inr; }
+  var llmCost = llmIn + llmOut;
+
+  var vpsInfo = IN_PRICES.vps[p.vpsKey];
+  var vpsCost = vpsInfo.price_inr;
+  var cogs = telCost + sttCost + ttsCost + llmCost + recCost + numRent + vpsCost;
+  var perCall = p.monthlyCalls > 0 ? cogs / p.monthlyCalls : 0;
+  var perMin = totalMin > 0 ? cogs / totalMin : 0;
+
+  var llmNames = { groq_llama70b:'Groq Llama 70B', groq_llama8b:'Groq Llama 8B', groq_gpt120b:'Groq GPT-OSS 120B', sarvam_30b:'Sarvam 30B', sarvam_105b:'Sarvam 105B' };
+  var provNames = { telephony: p.telephony==='vobiz'?'Vobiz India':'Plivo India', stt:'Sarvam Saaras v3', tts: p.tts==='sarvam_v2'?'Sarvam Bulbul v2':'Sarvam Bulbul v3', llm: llmNames[p.llm] };
+
+  document.getElementById('in_metCogs').textContent = '\u20B9' + cogs.toLocaleString('en-IN',{maximumFractionDigits:0});
+  document.getElementById('in_metPerCall').textContent = '\u20B9' + perCall.toFixed(2);
+  document.getElementById('in_metPerMin').textContent = '\u20B9' + perMin.toFixed(2);
+  var gm = IN_TIERS.growth - cogs; var gp = cogs<IN_TIERS.growth?((IN_TIERS.growth-cogs)/IN_TIERS.growth*100):0;
+  document.getElementById('in_metMargin').textContent = '\u20B9' + gm.toLocaleString('en-IN',{maximumFractionDigits:0}) + ' (' + gp.toFixed(1) + '%)';
+
+  var rows = [['Telephony',telCost,provNames.telephony],['STT',sttCost,provNames.stt],['TTS',ttsCost,provNames.tts],['LLM',llmCost,provNames.llm],['Recording',recCost,'\u2014'],['Number Rental',numRent,'\u2014'],['VPS',vpsCost,vpsInfo.name+' ('+vpsInfo.type+')']];
+  var html = '';
+  for (var i=0;i<rows.length;i++) { var nm=rows[i][0],cs=rows[i][1],pr=rows[i][2]; var pct=cogs>0?(cs/cogs*100):0; html+='<tr><td>'+nm+'</td><td style="color:var(--muted)">'+pr+'</td><td class="num">\u20B9'+cs.toLocaleString('en-IN',{minimumFractionDigits:2})+'</td><td class="num">\u20B9'+(p.monthlyCalls>0?(cs/p.monthlyCalls).toFixed(2):'0.00')+'</td><td>'+pct.toFixed(1)+'% <span class="bar"><span class="bar-fill" style="width:'+pct+'%"></span></span></td></tr>'; }
+  html+='<tr><td>TOTAL</td><td></td><td class="num">\u20B9'+cogs.toLocaleString('en-IN',{minimumFractionDigits:2})+'</td><td class="num">\u20B9'+perCall.toFixed(2)+'</td><td>100%</td></tr>';
+  document.getElementById('in_breakdownBody').innerHTML = html;
+
+  setTier('in_tierStarterMargin', IN_TIERS.starter, cogs, '\u20B9');
+  setTier('in_tierGrowthMargin', IN_TIERS.growth, cogs, '\u20B9');
+  setTier('in_tierProMargin', IN_TIERS.pro, cogs, '\u20B9');
+
+  document.querySelectorAll('#panelIn .tier').forEach(function(t){t.classList.remove('recommended');});
+  var pp=cogs<IN_TIERS.pro?((IN_TIERS.pro-cogs)/IN_TIERS.pro*100):0;
+  var gp2=cogs<IN_TIERS.growth?((IN_TIERS.growth-cogs)/IN_TIERS.growth*100):0;
+  if(pp>=50)document.getElementById('in_tierPro').classList.add('recommended');
+  else if(gp2>=40)document.getElementById('in_tierGrowth').classList.add('recommended');
+  else document.getElementById('in_tierStarter').classList.add('recommended');
+}
+
+// ======================================================================
+// US CALCULATOR
+// ======================================================================
+
+function calcUs() {
+  var p = {
+    telephony: document.getElementById('us_telephony').value,
+    stt: document.getElementById('us_stt').value,
+    tts: document.getElementById('us_tts').value,
+    llm: document.getElementById('us_llm').value,
+    vpsKey: document.getElementById('us_vps').value,
+    callDur: parseFloat(document.getElementById('us_callDur').value),
+    monthlyCalls: parseInt(document.getElementById('us_monthlyCalls').value),
+    aiSpeechPct: parseInt(document.getElementById('us_aiSpeechPct').value) / 100,
+    avgTokens: parseInt(document.getElementById('us_avgTokens').value),
+    avgTurns: parseInt(document.getElementById('us_avgTurns').value),
+    recording: document.getElementById('us_recording').checked,
+    numberRental: document.getElementById('us_numberRental').checked,
+  };
+
+  var totalMin = p.callDur * p.monthlyCalls;
+  var aiMin = p.callDur * p.aiSpeechPct * p.monthlyCalls;
+  var aiChars = aiMin * 1000;
+
+  var telPerMin, numRent, recPerMin;
+  if (p.telephony === 'telnyx') {
+    telPerMin = US_PRICES.telnyx.voice_per_min_usd;
+    numRent = p.numberRental ? US_PRICES.telnyx.number_rental_usd : 0;
+    recPerMin = US_PRICES.telnyx.recording_per_min_usd;
+  } else {
+    telPerMin = US_PRICES.plivo_us.voice_inbound_per_min_usd;
+    numRent = p.numberRental ? US_PRICES.plivo_us.number_rental_usd : 0;
+    recPerMin = 0;
+  }
+  var telCost = totalMin * telPerMin;
+  var recCost = p.recording ? totalMin * recPerMin : 0;
+
+  var sttPerMin = US_PRICES.stt[p.stt] || 0.0077;
+  var sttCost = totalMin * sttPerMin;
+
+  var ttsPer1m = US_PRICES.tts[p.tts] || 50;
+  var ttsCost = (aiChars / 1e6) * ttsPer1m;
+
+  var inTok = p.avgTurns * p.monthlyCalls * 500;
+  var outTok = p.avgTurns * p.monthlyCalls * p.avgTokens;
+  var llmIn = 0, llmOut = 0;
+  if (p.llm === 'groq_llama70b') { llmIn = (inTok/1e6)*US_PRICES.groq.llama_3_3_70b_input_per_1m_usd; llmOut = (outTok/1e6)*US_PRICES.groq.llama_3_3_70b_output_per_1m_usd; }
+  else if (p.llm === 'groq_llama8b') { llmIn = (inTok/1e6)*US_PRICES.groq.llama_3_1_8b_input_per_1m_usd; llmOut = (outTok/1e6)*US_PRICES.groq.llama_3_1_8b_output_per_1m_usd; }
+  else if (p.llm === 'groq_gpt120b') { llmIn = (inTok/1e6)*US_PRICES.groq.gpt_oss_120b_input_per_1m_usd; llmOut = (outTok/1e6)*US_PRICES.groq.gpt_oss_120b_output_per_1m_usd; }
+  var llmCost = llmIn + llmOut;
+
+  var vpsInfo = US_PRICES.vps_us[p.vpsKey];
+  var vpsCost = vpsInfo.price_usd;
+  var cogs = telCost + sttCost + ttsCost + llmCost + recCost + numRent + vpsCost;
+  var perCall = p.monthlyCalls > 0 ? cogs / p.monthlyCalls : 0;
+  var perMin = totalMin > 0 ? cogs / totalMin : 0;
+
+  var llmNames = { groq_llama70b:'Groq Llama 70B', groq_llama8b:'Groq Llama 8B', groq_gpt120b:'Groq GPT-OSS 120B' };
+  var sttNames = { deepgram_nova3:'Deepgram Nova-3', deepgram_flux:'Deepgram Flux', assemblyai:'AssemblyAI U-3.5', openai_whisper:'OpenAI Whisper' };
+  var ttsNames = { elevenlabs_flash:'ElevenLabs Flash v2.5', elevenlabs_v3:'ElevenLabs v3', openai_tts1:'OpenAI TTS-1', deepgram_aura2:'Deepgram Aura-2' };
+  var provNames = { telephony: p.telephony==='telnyx'?'Telnyx US':'Plivo US', stt: sttNames[p.stt], tts: ttsNames[p.tts], llm: llmNames[p.llm] };
+
+  document.getElementById('us_metCogs').textContent = '$' + cogs.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('us_metPerCall').textContent = '$' + perCall.toFixed(4);
+  document.getElementById('us_metPerMin').textContent = '$' + perMin.toFixed(4);
+  var gm = US_TIERS.growth - cogs; var gp = cogs<US_TIERS.growth?((US_TIERS.growth-cogs)/US_TIERS.growth*100):0;
+  document.getElementById('us_metMargin').textContent = '$' + gm.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) + ' (' + gp.toFixed(1) + '%)';
+
+  var rows = [['Telephony',telCost,provNames.telephony],['STT',sttCost,provNames.stt],['TTS',ttsCost,provNames.tts],['LLM',llmCost,provNames.llm],['Recording',recCost,'\u2014'],['Number Rental',numRent,'\u2014'],['VPS',vpsCost,vpsInfo.name+' ('+vpsInfo.type+')']];
+  var html = '';
+  for (var i=0;i<rows.length;i++) { var nm=rows[i][0],cs=rows[i][1],pr=rows[i][2]; var pct=cogs>0?(cs/cogs*100):0; html+='<tr><td>'+nm+'</td><td style="color:var(--muted)">'+pr+'</td><td class="num">$'+cs.toLocaleString('en-US',{minimumFractionDigits:2})+'</td><td class="num">$'+(p.monthlyCalls>0?(cs/p.monthlyCalls).toFixed(4):'0.0000')+'</td><td>'+pct.toFixed(1)+'% <span class="bar"><span class="bar-fill" style="width:'+pct+'%"></span></span></td></tr>'; }
+  html+='<tr><td>TOTAL</td><td></td><td class="num">$'+cogs.toLocaleString('en-US',{minimumFractionDigits:2})+'</td><td class="num">$'+perCall.toFixed(4)+'</td><td>100%</td></tr>';
+  document.getElementById('us_breakdownBody').innerHTML = html;
+
+  setTier('us_tierStarterMargin', US_TIERS.starter, cogs, '$');
+  setTier('us_tierGrowthMargin', US_TIERS.growth, cogs, '$');
+  setTier('us_tierProMargin', US_TIERS.pro, cogs, '$');
+
+  document.querySelectorAll('#panelUs .tier').forEach(function(t){t.classList.remove('recommended');});
+  var pp=cogs<US_TIERS.pro?((US_TIERS.pro-cogs)/US_TIERS.pro*100):0;
+  var gp2=cogs<US_TIERS.growth?((US_TIERS.growth-cogs)/US_TIERS.growth*100):0;
+  if(pp>=50)document.getElementById('us_tierPro').classList.add('recommended');
+  else if(gp2>=40)document.getElementById('us_tierGrowth').classList.add('recommended');
+  else document.getElementById('us_tierStarter').classList.add('recommended');
+}
+
+// ======================================================================
+// SHARED HELPERS
+// ======================================================================
+
+function setTier(id, price, cogs, sym) {
+  var el = document.getElementById(id);
+  var margin = price - cogs;
+  var pct = cogs < price ? ((price - cogs) / price * 100) : 0;
+  el.textContent = sym + margin.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}) + ' (' + pct.toFixed(1) + '%)';
   el.className = 'pct ' + (pct >= 50 ? 'good' : pct >= 30 ? 'ok' : 'bad');
 }
 
-function updateRange(el, suffix) {
+function updRange(el, suffix) {
   suffix = suffix || '';
-  var display = document.getElementById(el.id + 'Val');
-  if (display) display.textContent = el.value + suffix;
+  var d = document.getElementById(el.id + 'Val');
+  if (d) d.textContent = el.value + suffix;
 }
 
 // ======================================================================
-// VISITOR COUNTER (countapi.mileshilliard.com — free, no signup)
+// VISITOR COUNTER
 // ======================================================================
-
 (function() {
-  var counterKey = 'voice-cost-calc-visitors';
-  var baseUrl = 'https://countapi.mileshilliard.com/api/v1';
-
-  // Increment on load
-  fetch(baseUrl + '/hit/' + counterKey)
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      if (data.value !== undefined) {
-        document.getElementById('visitorCount').textContent = data.value.toLocaleString();
-      }
-    })
-    .catch(function() {
-      document.getElementById('visitorCount').textContent = '—';
-    });
+  fetch('https://countapi.mileshilliard.com/api/v1/hit/voice-cost-calc-visitors')
+    .then(function(r){return r.json();})
+    .then(function(d){if(d.value!==undefined)document.getElementById('visitorCount').textContent=d.value.toLocaleString();})
+    .catch(function(){document.getElementById('visitorCount').textContent='\u2014';});
 })();
 
 // ======================================================================
 // INIT
 // ======================================================================
-calculate();
+calcIn();
 </script>
-
 </body>
 </html>
